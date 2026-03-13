@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InBody App</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="logo">
+            <span style="font-size: 20px; font-weight: 800; color: var(--primary-teal); letter-spacing: -0.5px;">InBody</span>
+        </div>
+        <div class="header-actions">
+            <div class="user-profile">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 5C13.66 5 15 6.34 15 8C15 9.66 13.66 11 12 11C10.34 11 9 9.66 9 8C9 6.34 10.34 5 12 5ZM12 19.2C9.5 19.2 7.29 17.92 6 15.98C6.03 13.99 10 12.9 12 12.9C13.99 12.9 17.97 13.99 18 15.98C16.71 17.92 14.5 19.2 12 19.2Z" fill="#D1D5DB"/>
+                </svg>
+            </div>
+            <div class="notification-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 22C13.1 22 14 21.1 14 20H10C10 21.1 10.9 22 12 22ZM18 16V11C18 7.93 16.37 5.36 13.5 4.68V4C13.5 3.17 12.83 2.5 12 2.5C11.17 2.5 10.5 3.17 10.5 4V4.68C7.64 5.36 6 7.92 6 11V16L4 18V19H20V18L18 16ZM16 17H8V11C8 8.52 9.51 6.5 12 6.5C14.49 6.5 16 8.52 16 11V17Z" fill="#D1D5DB"/>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- 탭 내비게이션 -->
+    <nav class="tab-segmented">
+        <a href="#" class="tab-segmented-item active">전체</a>
+        <a href="#" class="tab-segmented-item">체성분</a>
+        <a href="#" class="tab-segmented-item">비교</a>
+    </nav>
+
+    <!-- 오늘의 건강 상태 요약 그리드 -->
+    <section class="summary-section">
+        <div class="summary-grid">
+            <div class="summary-item active">
+                <div class="summary-label">체중</div>
+                <div class="summary-value">64.5</div>
+                <div class="summary-tag">▲ 0.1</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">골격근량</div>
+                <div class="summary-value">25.3</div>
+                <div class="summary-tag">정상</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">체지방량</div>
+                <div class="summary-value">17.8</div>
+                <div class="summary-tag">▲ 0.2</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 체중 변화 그래프 섹션 -->
+    <section>
+        <div class="graph-date-box">
+            <span>체중 변화</span>
+            <span>1.7. ~ 1.25.</span>
+        </div>
+        <div class="graph-container card" style="height: 200px; padding: 10px; margin-bottom: 24px; position: relative;">
+            <svg width="100%" height="100%" viewBox="0 0 325 150">
+                <defs>
+                    <linearGradient id="graphGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#51ABAF" stop-opacity="0.2" />
+                        <stop offset="100%" stop-color="#51ABAF" stop-opacity="0" />
+                    </linearGradient>
+                </defs>
+                <!-- 가이드라인 (점선) -->
+                <line x1="0" y1="120" x2="325" y2="120" stroke="#F3F4F6" stroke-dasharray="4 4" />
+                <line x1="0" y1="80" x2="325" y2="80" stroke="#F3F4F6" stroke-dasharray="4 4" />
+                <line x1="0" y1="40" x2="325" y2="40" stroke="#F3F4F6" stroke-dasharray="4 4" />
+                
+                <!-- 그라데이션 영역 -->
+                <path d="M10 130 C 50 130, 80 120, 110 100 S 170 50, 210 70 S 280 120, 315 130 V 150 H 10 Z" fill="url(#graphGradient)" />
+                
+                <!-- 곡선 경로 -->
+                <path d="M10 130 C 50 130, 80 120, 110 100 S 170 50, 210 70 S 280 120, 315 130" fill="none" stroke="#51ABAF" stroke-width="2" />
+                
+                <!-- 날짜 및 데이터 포인트 (SVG 내부 텍스트 및 원) -->
+                <circle cx="10" cy="130" r="3" fill="#51ABAF" />
+                <text x="10" y="145" font-size="10" fill="#BCBCBC" text-anchor="middle">1.7.</text>
+                
+                <circle cx="70" cy="125" r="3" fill="#51ABAF" />
+                <text x="70" y="145" font-size="10" fill="#BCBCBC" text-anchor="middle">1.10.</text>
+                
+                <circle cx="130" cy="90" r="3" fill="#51ABAF" />
+                <text x="130" y="145" font-size="10" fill="#BCBCBC" text-anchor="middle">1.15.</text>
+                
+                <circle cx="200" cy="65" r="4" fill="#971212" />
+                <text x="200" y="55" font-size="12" font-weight="700" fill="#971212" text-anchor="middle">68.5</text>
+                <text x="200" y="145" font-size="10" fill="#BCBCBC" text-anchor="middle">1.18.</text>
+                
+                <circle cx="260" cy="110" r="3" fill="#51ABAF" />
+                <text x="260" y="145" font-size="10" fill="#BCBCBC" text-anchor="middle">1.22.</text>
+                
+                <circle cx="315" cy="130" r="3" fill="#51ABAF" />
+                <text x="315" y="145" font-size="10" fill="#BCBCBC" text-anchor="middle">1.25.</text>
+            </svg>
+        </div>
+    </section>
+
+    <!-- 목표 진행률 -->
+    <section class="goal-section">
+        <div class="section-header flex justify-between items-center" style="padding: 0 16px;">
+            <span class="section-title" style="margin: 0;">목표 진행률</span>
+            <span style="font-size: 12px; color: var(--primary-teal); font-weight: 700;">비슷한 체형 상위 20%</span>
+        </div>
+        
+        <div class="card goal-card">
+            <!-- 체중 진행률 -->
+            <div class="progress-item">
+                <div class="goal-header">
+                    <span class="section-label">체중 (kg)</span>
+                    <div class="flex items-center gap-1">
+                        <span style="font-weight: 700; font-size: 16px;">64.5</span>
+                        <span style="color: var(--text-sub); font-size: 12px;">/ 60.0</span>
+                    </div>
+                </div>
+                <div class="progress-bar-bg" style="height: 6px;">
+                    <div class="progress-bar-fill" style="width: 70%; background-color: var(--primary-teal);"></div>
+                </div>
+            </div>
+
+            <!-- 골격근량 진행률 -->
+            <div class="progress-item mt-4">
+                <div class="goal-header">
+                    <span class="section-label">골격근량 (kg)</span>
+                    <div class="flex items-center gap-1">
+                        <span style="font-weight: 700; font-size: 16px;">25.3</span>
+                        <span style="color: var(--text-sub); font-size: 12px;">/ 28.0</span>
+                    </div>
+                </div>
+                <div class="progress-bar-bg" style="height: 6px;">
+                    <div class="progress-bar-fill" style="width: 45%; background-color: var(--primary-teal);"></div>
+                </div>
+            </div>
+            
+    <!-- 영양 분석 섹션 -->
+    <section class="intake-section">
+        <div style="padding: 0 16px 8px 16px;">
+            <span class="section-title" style="margin: 0;">영양 분석</span>
+        </div>
+        
+        <div class="intake-grid">
+            <div class="intake-item">
+                <div class="intake-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </div>
+                <div class="intake-label">탄수화물</div>
+                <div class="intake-value">150g</div>
+            </div>
+            <div class="intake-item">
+                <div class="intake-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </div>
+                <div class="intake-label">단백질</div>
+                <div class="intake-value">80g</div>
+            </div>
+            <div class="intake-item">
+                <div class="intake-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </div>
+                <div class="intake-label">지방</div>
+                <div class="intake-value">45g</div>
+            </div>
+        </div>
+
+        <div class="intake-total-btn">
+            <span>총 섭취 칼로리</span>
+            <span>1,850 kcal</span>
+        </div>
+    </section>
+
+    <!-- 건강검진 결과 섹션 -->
+    <section class="health-check-section">
+        <div style="padding: 0 16px 8px 16px;">
+            <span class="section-title" style="margin: 0;">건강검진 결과</span>
+        </div>
+        
+        <div class="health-card">
+            <div class="health-icon">🍎</div>
+            <span class="health-title">간건강</span>
+            <span class="health-status" style="color: var(--primary-teal);">매우 좋음</span>
+        </div>
+        
+        <div class="health-card warning">
+            <div class="health-icon">⚠️</div>
+            <span class="health-title">신장건강</span>
+            <span class="health-status">주의 필요</span>
+        </div>
+    </section>
+
+    <!-- FAB -->
+    <button class="fab" id="fabBtn">
+        <svg fill="currentColor" width="20" height="20" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        <span>기록하기</span>
+    </button>
+
+    <!-- 모달 오버레이 -->
+    <div class="bottom-sheet-overlay" id="sheetOverlay"></div>
+
+    <!-- 바텀시트 -->
+    <div class="bottom-sheet" id="bottomSheet">
+        <div class="sheet-header">
+            <h2 class="title">인바디 측정 결과 입력</h2>
+            <button class="close-btn" id="closeBtn">✕</button>
+        </div>
+        <div class="form-group">
+            <label>체중 (kg)</label>
+            <input type="number" placeholder="예: 65.0">
+        </div>
+        <div class="form-group">
+            <label>체지방률 (%)</label>
+            <input type="number" placeholder="예: 22.0">
+        </div>
+        <div class="form-group">
+            <label>골격근량 (kg)</label>
+            <input type="number" placeholder="예: 28.0">
+        </div>
+        <div style="display: flex; gap: 16px;">
+            <div class="form-group" style="flex:1;">
+                <label>BMI</label>
+                <input type="number" placeholder="예: 21.5">
+            </div>
+            <div class="form-group" style="flex:1;">
+                <label>체수분량 (L)</label>
+                <input type="number" placeholder="예: 35.0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>내장지방 수준</label>
+            <input type="number" placeholder="예: 4">
+        </div>
+        <button class="btn-primary mt-4" style="background-color: var(--weight-color);" id="saveBtn">저장하기</button>
+    </div>
+
+    <!-- 하단 탭바 -->
+    <nav class="tabbar">
+        <a href="index.html" class="tabbar-item active">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            홈
+        </a>
+        <a href="inbody.html" class="tabbar-item">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            기록
+        </a>
+        <a href="report.html" class="tabbar-item">
+            <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.103 0-2 .897-2 2v4c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-4c0-1.103-.897-2-2-2zm0 6H5v-4h14v4z"/><path d="M5 4h14v2H5zm0 14h14v2H5z"/></svg>
+            리포트
+        </a>
+        <a href="goal.html" class="tabbar-item">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+            마이
+        </a>
+    </nav>
+
+    <script>
+        const fabBtn = document.getElementById('fabBtn');
+        const bottomSheet = document.getElementById('bottomSheet');
+        const sheetOverlay = document.getElementById('sheetOverlay');
+        const closeBtn = document.getElementById('closeBtn');
+        const saveBtn = document.getElementById('saveBtn');
+
+        function toggleSheet() {
+            bottomSheet.classList.toggle('open');
+            sheetOverlay.classList.toggle('open');
+            if (bottomSheet.classList.contains('open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        fabBtn.addEventListener('click', toggleSheet);
+        closeBtn.addEventListener('click', toggleSheet);
+        sheetOverlay.addEventListener('click', toggleSheet);
+        saveBtn.addEventListener('click', toggleSheet);
+    </script>
+</body>
+</html>

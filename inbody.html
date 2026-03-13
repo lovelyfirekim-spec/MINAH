@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InBody App - 인바디 기록</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .inbody-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .trend-icon {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .sub-desc {
+            font-size: 12px;
+            color: var(--text-sub);
+            margin-top: 6px;
+        }
+        
+        /* 스크롤 가능한 템플릿 */
+        .template-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-top: 12px;
+            margin-bottom: 16px;
+            scroll-snap-type: x mandatory;
+        }
+        .template-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .share-template {
+            min-width: 200px;
+            height: 280px;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            scroll-snap-align: start;
+        }
+        .template-1 {
+            background-color: var(--bg-color);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .template-2 {
+            background: linear-gradient(135deg, #1A2B3C, #A855F7);
+        }
+        .template-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .template-data {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        /* 이전 기록 목록 */
+        .history-list {
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .history-item {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            transition: background-color 0.2s;
+        }
+        .history-item:hover {
+            background-color: #243B53;
+        }
+        .history-date {
+            grid-column: 1 / -1;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+        .history-stat {
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+        .history-stat span {
+            display: block;
+            font-size: 14px;
+            color: var(--text-main);
+            font-weight: 500;
+            margin-top: 2px;
+        }
+        
+        /* 유틸 */
+        .section-gap {
+            margin-bottom: 24px;
+        }
+        .btn-half {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1 class="title">인바디 측정 결과</h1>
+    </header>
+
+    <section>
+        <!-- 체중 카드 -->
+        <div class="card inbody-card">
+            <div class="flex-col">
+                <span class="section-label">체중</span>
+                <span class="main-number" style="color: var(--weight-color);">65 kg</span>
+            </div>
+            <div class="flex-col" style="align-items: flex-end;">
+                <div class="trend-icon" style="color: var(--weight-color);">↘ 하락</div>
+                <div class="badge normal mt-4">정상</div>
+            </div>
+        </div>
+
+        <!-- 체지방률 카드 -->
+        <div class="card inbody-card" style="align-items: flex-start;">
+            <div class="flex-col">
+                <span class="section-label">체지방률</span>
+                <span class="main-number" style="color: var(--fat-color);">22 %</span>
+            </div>
+            <div class="flex-col" style="align-items: flex-end;">
+                <div class="trend-icon" style="color: var(--fat-color);">↗ 상승</div>
+                <div class="badge normal mt-4">정상</div>
+                <div class="sub-desc">성인 여성 기준 18~25%가 정상 범위입니다</div>
+            </div>
+        </div>
+
+        <!-- 골격근량 카드 -->
+        <div class="card inbody-card">
+            <div class="flex-col">
+                <span class="section-label">골격근량</span>
+                <span class="main-number" style="color: var(--muscle-color);">28 kg</span>
+            </div>
+            <div class="flex-col" style="align-items: flex-end;">
+                <div class="trend-icon" style="color: var(--muscle-color);">↗ 상승</div>
+                <div class="badge normal mt-4">정상</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 체중 변화 그래프 -->
+    <section class="section-gap" style="padding: 0 16px;">
+        <span class="section-label mb-4" style="display:block;">체중 변화 추이</span>
+        <div class="graph-container">
+            <canvas id="weightChart"></canvas>
+        </div>
+    </section>
+
+    <!-- 공유 카드 -->
+    <section class="section-gap" style="padding: 0 16px;">
+        <span class="section-label">오늘의 기록 공유하기</span>
+        <div class="template-scroll">
+            <!-- 템플릿 1 -->
+            <div class="share-template template-1">
+                <div class="template-title">오늘 득근 성공! 💪</div>
+                <div class="template-data text-weight">65 kg</div>
+                <div style="font-size: 14px; color: var(--text-sub); margin-top: 8px;">골격근량 28kg 돌파</div>
+            </div>
+            <!-- 템플릿 2 -->
+            <div class="share-template template-2">
+                <div class="template-title">🔥 체지방 컷팅중</div>
+                <div class="template-data">22 %</div>
+                <div style="font-size: 14px; margin-top: 8px;">목표까지 -4%</div>
+            </div>
+        </div>
+        <div style="display: flex; gap: 12px;">
+            <button class="btn-primary btn-half" style="background-color: #3B82F6;">이미지 저장</button>
+            <button class="btn-primary btn-half" style="background-color: var(--card-bg);">SNS 공유</button>
+        </div>
+    </section>
+
+    <!-- 이전 기록 리스트 -->
+    <section style="padding: 0 16px; margin-bottom: 32px;">
+        <button class="btn-primary" style="background-color: #3B82F6;" id="toggleHistoryBtn">
+            📅 이전 기록 보기
+        </button>
+        <div class="history-list" id="historyList">
+            <div class="history-item">
+                <div class="history-date">2024-04-11</div>
+                <div class="history-stat">체중<span class="text-weight">65.5kg</span></div>
+                <div class="history-stat">체지방<span class="text-fat">22.5%</span></div>
+                <div class="history-stat">골격근<span class="text-muscle">27.8kg</span></div>
+            </div>
+            <div class="history-item">
+                <div class="history-date">2024-03-11</div>
+                <div class="history-stat">체중<span class="text-weight">66kg</span></div>
+                <div class="history-stat">체지방<span class="text-fat">23%</span></div>
+                <div class="history-stat">골격근<span class="text-muscle">27.5kg</span></div>
+            </div>
+            <div class="history-item">
+                <div class="history-date">2024-02-11</div>
+                <div class="history-stat">체중<span class="text-weight">66.5kg</span></div>
+                <div class="history-stat">체지방<span class="text-fat">23.5%</span></div>
+                <div class="history-stat">골격근<span class="text-muscle">27.2kg</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 하단 탭바 -->
+    <nav class="tabbar">
+        <a href="index.html" class="tabbar-item">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            홈
+        </a>
+        <a href="inbody.html" class="tabbar-item active">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            기록
+        </a>
+        <a href="report.html" class="tabbar-item">
+            <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.103 0-2 .897-2 2v4c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-4c0-1.103-.897-2-2-2zm0 6H5v-4h14v4z"/><path d="M5 4h14v2H5zm0 14h14v2H5z"/></svg>
+            리포트
+        </a>
+        <a href="goal.html" class="tabbar-item">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+            마이
+        </a>
+    </nav>
+
+    <script>
+        // 이전 기록 토글
+        const toggleBtn = document.getElementById('toggleHistoryBtn');
+        const historyList = document.getElementById('historyList');
+        
+        toggleBtn.addEventListener('click', () => {
+            if (historyList.style.display === 'flex') {
+                historyList.style.display = 'none';
+            } else {
+                historyList.style.display = 'flex';
+            }
+        });
+
+        // 체중 변화 그래프 초기화
+        const ctx = document.getElementById('weightChart').getContext('2d');
+        
+        // 그라디언트 생성
+        const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+        gradient.addColorStop(0, 'rgba(0, 212, 255, 0.4)');
+        gradient.addColorStop(1, 'rgba(0, 212, 255, 0)');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['1월', '2월', '3월', '4월', '5월'],
+                datasets: [{
+                    label: '체중(kg)',
+                    data: [67.0, 66.5, 66.0, 65.5, 65.0],
+                    borderColor: '#00D4FF',
+                    backgroundColor: gradient,
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#0D1B2A',
+                    pointBorderColor: '#00D4FF',
+                    pointBorderWidth: 2,
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255,255,255,0.05)',
+                            drawBorder: false
+                        },
+                        ticks: { color: '#94A3B8' }
+                    },
+                    y: {
+                        min: 64,
+                        max: 68,
+                        grid: {
+                            color: 'rgba(255,255,255,0.05)',
+                            drawBorder: false
+                        },
+                        ticks: { color: '#94A3B8' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1A2B3C',
+                        titleColor: '#fff',
+                        bodyColor: '#00D4FF',
+                        displayColors: false
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InBody App - 목표 설정</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .goal-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 0 16px 16px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .goal-card.weight { border-top: 3px solid var(--weight-color); }
+        .goal-card.fat { border-top: 3px solid var(--fat-color); }
+        .goal-card.muscle { border-top: 3px solid var(--muscle-color); }
+        
+        .goal-label {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .goal-label.weight { color: var(--weight-color); }
+        .goal-label.fat { color: var(--fat-color); }
+        .goal-label.muscle { color: var(--muscle-color); }
+
+        .goal-input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .goal-input {
+            background-color: var(--bg-color);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            width: 80px;
+            height: 44px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            text-align: right;
+            padding: 0 12px;
+        }
+        .goal-input:focus {
+            outline: none;
+            border-color: var(--goal-color);
+        }
+        .goal-unit {
+            font-size: 14px;
+            color: var(--text-sub);
+            width: 20px;
+        }
+
+        /* 비교 카드 */
+        .compare-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+            text-align: center;
+        }
+        .compare-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .compare-label {
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+        .compare-current {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .compare-target {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .target-weight { color: var(--goal-color); }
+        .target-fat { color: var(--fat-color); }
+        .target-muscle { color: var(--goal-color); }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1 class="title">목표 설정</h1>
+    </header>
+
+    <section>
+        <!-- 목표 체중 카드 -->
+        <div class="goal-card weight">
+            <div class="goal-label weight">
+                <span>⚖️</span> 목표 체중
+            </div>
+            <div class="goal-input-group">
+                <input type="number" class="goal-input" value="62">
+                <span class="goal-unit">kg</span>
+            </div>
+        </div>
+
+        <!-- 목표 체지방률 카드 -->
+        <div class="goal-card fat">
+            <div class="goal-label fat">
+                <span>🔥</span> 목표 체지방률
+            </div>
+            <div class="goal-input-group">
+                <input type="number" class="goal-input" value="18">
+                <span class="goal-unit">%</span>
+            </div>
+        </div>
+
+        <!-- 목표 근육량 카드 -->
+        <div class="goal-card muscle">
+            <div class="goal-label muscle">
+                <span>💪</span> 목표 근육량
+            </div>
+            <div class="goal-input-group">
+                <input type="number" class="goal-input" value="30">
+                <span class="goal-unit">kg</span>
+            </div>
+        </div>
+
+        <!-- 목표 저장 버튼 -->
+        <div style="padding: 0 16px; margin-bottom: 32px; margin-top: 8px;">
+            <button class="btn-primary" style="background-color: var(--goal-color);">
+                💾 목표 저장
+            </button>
+        </div>
+    </section>
+
+    <section style="padding: 0 16px;">
+        <div class="card" style="margin: 0;">
+            <span class="section-label" style="display:block; text-align:center; font-size:16px;">현재 vs 목표</span>
+            
+            <div class="compare-grid">
+                <!-- 체중 -->
+                <div class="compare-item">
+                    <div class="compare-label">체중</div>
+                    <div class="compare-current">65kg</div>
+                    <div class="compare-target target-weight">→ 62kg</div>
+                </div>
+                <!-- 체지방률 -->
+                <div class="compare-item">
+                    <div class="compare-label">체지방률</div>
+                    <div class="compare-current">22%</div>
+                    <div class="compare-target target-fat">→ 18%</div>
+                </div>
+                <!-- 근육량 -->
+                <div class="compare-item">
+                    <div class="compare-label">근육량</div>
+                    <div class="compare-current">28kg</div>
+                    <div class="compare-target target-muscle">→ 30kg</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 하단 탭바 -->
+    <nav class="tabbar">
+        <a href="index.html" class="tabbar-item">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            홈
+        </a>
+        <a href="inbody.html" class="tabbar-item">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            기록
+        </a>
+        <a href="report.html" class="tabbar-item">
+            <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.103 0-2 .897-2 2v4c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-4c0-1.103-.897-2-2-2zm0 6H5v-4h14v4z"/><path d="M5 4h14v2H5zm0 14h14v2H5z"/></svg>
+            리포트
+        </a>
+        <a href="goal.html" class="tabbar-item active">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+            마이
+        </a>
+    </nav>
+</body>
+</html>
